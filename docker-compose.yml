@@ -50,6 +50,7 @@ services:
       - ./www.conf:/etc/php/7.2/fpm/pool.d/www.conf
       - installdata:/usr/bin
       - ./init.sh:/var/www/html/init.sh
+      - ./php.ini:/etc/php/7.2/fpm/php.ini
       - ./backups:/var/www/html/storage/app/backups
     environment:
       DB_HOST: db
