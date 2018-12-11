@@ -20,8 +20,8 @@ services:
     networks:
       - appnet
     volumes:
-      - ./front-nginx.conf:/etc/nginx/nginx.conf
-      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./configuration/front-nginx.conf:/etc/nginx/nginx.conf
+      - ./configuration/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
     dns_search:
@@ -44,13 +44,13 @@ services:
     networks:
       - appnet
     volumes:
-      - ./app.conf:/etc/nginx/sites-available/default
-      - ./images:/var/www/html/public/images
-      - ./app-nginx.conf:/etc/nginx/nginx.conf
-      - ./www.conf:/etc/php/7.3/fpm/pool.d/www.conf
-      - ./init.sh:/var/www/html/init.sh
-      - ./php.ini:/etc/php/7.3/fpm/php.ini
-      - ./backups:/var/www/html/storage/app/backups
+      - ./configuration/app.conf:/etc/nginx/sites-available/default
+      - ./configuration/images:/var/www/html/public/images
+      - ./configuration/app-nginx.conf:/etc/nginx/nginx.conf
+      - ./configuration/www.conf:/etc/php/7.3/fpm/pool.d/www.conf
+      - ./configuration/init.sh:/var/www/html/init.sh
+      - ./configuration/php.ini:/etc/php/7.3/fpm/php.ini
+      - ./configuration/backups:/var/www/html/storage/app/backups
     environment:
       DB_HOST: db
       DB_DATABASE: homestead
@@ -89,7 +89,7 @@ services:
     networks:
       - appnet
     volumes:
-     - ./laravel-echo-server.json:/usr/src/app/laravel-echo-server.json
+     - ./configuration/laravel-echo-server.json:/usr/src/app/laravel-echo-server.json
     depends_on:
       - app
       - redis
