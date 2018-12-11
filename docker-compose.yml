@@ -45,12 +45,12 @@ services:
       - appnet
     volumes:
       - ./configuration/app.conf:/etc/nginx/sites-available/default
-      - ./configuration/images:/var/www/html/public/images
+      - ./images:/var/www/html/public/images
       - ./configuration/app-nginx.conf:/etc/nginx/nginx.conf
       - ./configuration/www.conf:/etc/php/7.3/fpm/pool.d/www.conf
       - ./configuration/init.sh:/var/www/html/init.sh
       - ./configuration/php.ini:/etc/php/7.3/fpm/php.ini
-      - ./configuration/backups:/var/www/html/storage/app/backups
+      - ./backups:/var/www/html/storage/app/backups
     environment:
       DB_HOST: db
       DB_DATABASE: homestead
