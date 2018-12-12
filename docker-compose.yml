@@ -37,7 +37,7 @@ services:
     dns_search:
       - admin.goduc.cc
   app:
-    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app:latest
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app:7.2
     working_dir: /var/www/html
     ports:
       - 8001:80
@@ -47,9 +47,9 @@ services:
       - ./configuration/app.conf:/etc/nginx/sites-available/default
       - ./images:/var/www/html/public/images
       - ./configuration/app-nginx.conf:/etc/nginx/nginx.conf
-      - ./configuration/www.conf:/etc/php/7.3/fpm/pool.d/www.conf
+      - ./configuration/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
       - ./configuration/init.sh:/var/www/html/init.sh
-      - ./configuration/php.ini:/etc/php/7.3/fpm/php.ini
+      - ./configuration/php.ini:/etc/php/7.2/fpm/php.ini
       - ./backups:/var/www/html/storage/app/backups
     environment:
       DB_HOST: db
