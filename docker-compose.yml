@@ -37,7 +37,7 @@ services:
     dns_search:
       - admin.goduc.cc
   app:
-    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app:7.2
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
     working_dir: /var/www/html
     ports:
       - 8001:80
