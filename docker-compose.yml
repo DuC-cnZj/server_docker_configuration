@@ -15,7 +15,7 @@ services:
     networks:
       - appnet
   frontend:
-    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:latest
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:local
     working_dir: /app
     networks:
       - appnet
@@ -23,12 +23,9 @@ services:
       - ./configuration/front-nginx.conf:/etc/nginx/nginx.conf
       - ./configuration/default.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - 80:80
-    dns_search:
-      - www.goduc.cc
-      - goduc.cc
+      - 8000:80
   background:
-    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:latest
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:local
     working_dir: /app
     networks:
       - appnet
@@ -37,7 +34,7 @@ services:
     dns_search:
       - admin.goduc.cc
   app:
-    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
+    image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app:latest
     working_dir: /var/www/html
     ports:
       - 8001:80
@@ -45,12 +42,11 @@ services:
       - appnet
     volumes:
       - ./configuration/app.conf:/etc/nginx/sites-available/default
-      - ./images:/var/www/html/public/images
       - ./configuration/app-nginx.conf:/etc/nginx/nginx.conf
       - ./configuration/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
       - ./configuration/init.sh:/var/www/html/init.sh
       - ./configuration/php.ini:/etc/php/7.2/fpm/php.ini
-      - ./backups:/var/www/html/storage/app/backups
+      - ./configuration/wait-for-it.sh:/var/www/html/wait-for-it.sh
     environment:
       DB_HOST: db
       DB_DATABASE: homestead
@@ -59,7 +55,6 @@ services:
       DB_PASSWORD: secret
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      BACKUP_ENABLED: 'true'
       BASH_NAMES: init.sh
     command: /bin/bash -c "envsubst < /var/www/html/.env.template > /var/www/html/.env && start-container"
   redis:
