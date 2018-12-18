@@ -18,21 +18,22 @@ docker-compose up -d
 
 填充测试数据，务必在启动至少一分钟后再使用该命令，因为在启动时，es 搜索引擎还没准备好，如果使用该命令时出现错误，证明系统还没启动完成。
 
+建立es索引
 ```shell
-docker-compose exec app php artisan db:seed --class=ArticleTableSeeder --force
+docker-compose exec app php artisan elastic:create-index App\\ES\\ArticleIndexConfigurator
 ```
 
 es 没启动完成会出现以下提示，请安心等待
 ```
-In Connection.php line 607:
+In StaticNoPingConnectionPool.php line 51:
 
-  {"error":{"root_cause":[{"type":"index_not_found_exception","reaso
-  n":"no such index","resource.type":"index_or_alias","resource.id":
-  "article_index_write","index_uuid":"_na_","index":"article_index_w
-  rite"}],"type":"index_not_found_exception","reason":"no such index
-  ","resource.type":"index_or_alias","resource.id":"article_index_wr
-  ite","index_uuid":"_na_","index":"article_index_write"},"status":4
-  04}
+  No alive nodes found in your cluster
+
+```
+
+填充数据
+```shell
+docker-compose exec app php artisan db:seed --class=ArticleTableSeeder --force
 ```
 
 ## 👀 预览
