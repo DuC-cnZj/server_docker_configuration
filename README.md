@@ -3,7 +3,7 @@
 ## 💡 安装
 
 ```shell
-git clone --depth 1 -b local https://github.com/DuC-cnZj/server_docker_configuration.git
+git clone --depth 1 -b local https://github.com/DuC-cnZj/server_docker_configuration.git blog
 ```
 
 ## 🚀 启动
@@ -49,7 +49,7 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:local
 docker rmi registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:local
 docker rmi registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
 
-docker volume rm configuration_dbdata configuration_esdata configuration_redisdata
+docker volume rm blog_dbdata blog_esdata blog_redisdata
 ```
 
 停止运行
