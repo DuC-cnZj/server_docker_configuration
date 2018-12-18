@@ -43,6 +43,14 @@ http://localhost:8080/ 后台 账号 123456789 密码 secret
 
 ## 🤠 操作
 
+停止运行
+
+```shell
+docker-compose down
+```
+
+> 删除之前请先停止运行。
+
 删除 docker镜像以及相关数据文件：
 ```shell
 docker rmi registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:local
@@ -52,11 +60,6 @@ docker rmi registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
 docker volume rm blog_dbdata blog_esdata blog_redisdata
 ```
 
-停止运行
-
-```shell
-docker-compose down
-```
 
 
 
