@@ -61,6 +61,10 @@ services:
       REDIS_PORT: 6379
       BACKUP_ENABLED: 'true'
       BASH_NAMES: init.sh
+      GITHUB_CLIENT_ID: 8fd6f41dcfc1001089c7
+      GITHUB_CLIENT_SECRET: 3ea90857a5524407654ed9ddcceacf82a429e9ad
+      GITHUB_REDIRECT: http://39.108.139.38:8001/login/github/callback
+      FRONTEND_DOMAIN: http://39.108.139.38/
     command: /bin/bash -c "envsubst < /var/www/html/.env.template > /var/www/html/.env && start-container"
   redis:
     image: redis:alpine
