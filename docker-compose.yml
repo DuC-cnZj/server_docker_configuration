@@ -12,11 +12,13 @@ services:
       - esdata:/usr/share/elasticsearch/data
     expose:
       - "9200"
+    restart: always
     networks:
       - appnet
   frontend:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:latest
     working_dir: /app
+    restart: always
     networks:
       - appnet
     volumes:
@@ -30,6 +32,7 @@ services:
   background:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:latest
     working_dir: /app
+    restart: always
     networks:
       - appnet
     ports:
@@ -43,6 +46,7 @@ services:
       - 8001:80
     networks:
       - appnet
+    restart: always
     volumes:
       - ./configuration/app.conf:/etc/nginx/sites-available/default
       - ./images:/var/www/html/public/images
@@ -74,6 +78,7 @@ services:
       - redisdata:/data
     ports:
       - 16379:6379
+    restart: always
   db:
     image: mysql:5.7
     environment:
@@ -83,6 +88,7 @@ services:
       MYSQL_PASSWORD: secret
     networks:
       - appnet
+    restart: always
     volumes:
       - dbdata:/var/lib/mysql
   echo-server:
