@@ -26,9 +26,6 @@ services:
       - ./configuration/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
-    dns_search:
-      - www.goduc.cc
-      - goduc.cc
   background:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:latest
     working_dir: /app
@@ -37,8 +34,6 @@ services:
       - appnet
     ports:
       - 8080:80
-    dns_search:
-      - admin.goduc.cc
   app:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
     working_dir: /var/www/html
