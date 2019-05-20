@@ -42,11 +42,11 @@ services:
       - ./configuration/init.sh:/var/www/html/init.sh
       - ./configuration/wait-for-it.sh:/var/www/html/wait-for-it.sh
     environment:
-      DB_HOST: db
-      DB_DATABASE: homestead
-      DB_PORT: 3306
-      DB_USERNAME: homestead
-      DB_PASSWORD: secret
+      DB_HOST: ${DB_HOST}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       REDIS_HOST: redis
       REDIS_PORT: 6379
       BASH_NAMES: init.sh
@@ -62,10 +62,10 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: homestead
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     networks:
       - appnet
     volumes:
