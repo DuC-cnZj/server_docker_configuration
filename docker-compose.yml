@@ -1,5 +1,33 @@
 version: "3"
 services:
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./nginx-proxy/certs:/etc/nginx/certs
+      - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
+      - ./nginx-proxy/html:/usr/share/nginx/html
+    depends_on:
+      - "nginx-proxy"
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx-proxy/certs:/etc/nginx/certs:ro
+      - ./nginx-proxy/vhost.d:/etc/nginx/vhost.d
+      - ./nginx-proxy/html:/usr/share/nginx/html
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+    networks:
+      - appnet
+    depends_on:
+      - app
+      - frontend
+      - background
+      - echo-server
   elasticsearch:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/elasticsearch_with_ik:6.4.2
     container_name: elasticsearch
@@ -19,26 +47,26 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_frontend:latest
     working_dir: /app
     restart: always
+    environment:
+      - VIRTUAL_HOST=whoops-cn.club,www.whoops-cn.club
+      - LETSENCRYPT_HOST=whoops-cn.club,www.whoops-cn.club
     networks:
       - appnet
     volumes:
       - ./configuration/front-nginx.conf:/etc/nginx/nginx.conf
       - ./configuration/default.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - 80:80
   background:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_backgroung:latest
     working_dir: /app
     restart: always
+    environment:
+      - VIRTUAL_HOST=admin.whoops-cn.club
+      - LETSENCRYPT_HOST=admin.whoops-cn.club
     networks:
       - appnet
-    ports:
-      - 8080:80
   app:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/blog_app
     working_dir: /var/www/html
-    ports:
-      - 8001:80
     networks:
       - appnet
     restart: always
@@ -51,6 +79,8 @@ services:
       - ./configuration/php.ini:/etc/php/7.2/fpm/php.ini
       - ./backups:/var/www/html/storage/app/backups
     environment:
+      VIRTUAL_HOST: api.whoops-cn.club 
+      LETSENCRYPT_HOST: api.whoops-cn.club
       DB_HOST: db
       DB_DATABASE: homestead
       DB_PORT: 3306
@@ -62,8 +92,10 @@ services:
       BASH_NAMES: init.sh
       GITHUB_CLIENT_ID: 8fd6f41dcfc1001089c7
       GITHUB_CLIENT_SECRET: 3ea90857a5524407654ed9ddcceacf82a429e9ad
-      GITHUB_REDIRECT: http://39.108.139.38:8001/login/github/callback
-      FRONTEND_DOMAIN: http://39.108.139.38/
+      GITHUB_REDIRECT: https://api.whoops-cn.club/login/github/callback
+      FRONTEND_DOMAIN: https://whoops-cn.club/
+    expose:
+      - "80"
     command: /bin/bash -c "envsubst < /var/www/html/.env.template > /var/www/html/.env && start-container"
   redis:
     image: redis:alpine
@@ -88,6 +120,10 @@ services:
       - dbdata:/var/lib/mysql
   echo-server:
     image: registry.cn-hangzhou.aliyuncs.com/duc-cnzj/laravel-echo-server
+    environment:
+      VIRTUAL_HOST: ws.whoops-cn.club
+      LETSENCRYPT_HOST: ws.whoops-cn.club
+      VIRTUAL_PORT: 6001
     ports:
      - "6001:6001"
     restart: always
